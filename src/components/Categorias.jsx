@@ -5,7 +5,9 @@ export default function Categorias({ categoriaSeleccionada, setCategoriaSeleccio
   const [categorias, setCategorias] = useState([]);
 
   useEffect(() => {
-    axios.get('http://127.0.0.1:8000/api/categorias/')
+    // CORREGIDO: Usa la variable de entorno con un fallback seguro
+    const urlBase = import.meta.env.VITE_API_URL || "https://coindecor-backend-production.up.railway.app";
+    axios.get(`${urlBase}/api/categorias/`)
       .then(res => setCategorias(res.data))
       .catch(err => console.error("Error cargando categorías:", err));
   }, []);
@@ -20,7 +22,6 @@ export default function Categorias({ categoriaSeleccionada, setCategoriaSeleccio
 
   return (
     <div className="flex flex-wrap gap-3 justify-center mb-12">
-
       <button
         onClick={() => setCategoriaSeleccionada(null)}
         className={estiloBoton(categoriaSeleccionada === null)}
