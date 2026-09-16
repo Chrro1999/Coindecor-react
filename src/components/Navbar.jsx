@@ -17,8 +17,8 @@ export default function Navbar() {
   const linkStyle = (path) =>
     `transition font-medium ${
       location.pathname === path
-        ? "text-[#C6A75E]"
-        : "text-gray-700 hover:text-[#C6A75E]"
+        ? "text-[#ff7f50]"
+        : "text-gray-700 hover:text-[#ff7f50]"
     }`;
 
   return (

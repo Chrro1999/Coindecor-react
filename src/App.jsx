@@ -1,6 +1,5 @@
 import { useEffect, useState } from "react";
-import axios from "axios"
-import axiosOriginal from "axios"; 
+import axios from "axios"; 
 
 import ProductoCard from "./components/ProductoCard";
 import Categorias from "./components/Categorias";
@@ -20,6 +19,9 @@ function App() {
   const [productoSeleccionado, setProductoSeleccionado] = useState(null);
   const [vista, setVista] = useState("inicio");
   const [menuAbierto, setMenuAbierto] = useState(false);
+  
+  // Estado para controlar el spinning loader
+  const [cargando, setCargando] = useState(true);
 
   // ========================
   // LÓGICA DE CARRITO
@@ -55,11 +57,16 @@ function App() {
   // API 
   // ========================
   useEffect(() => {
-    // CORREGIDO: Se quita el fallback a localhost
     const urlBase = import.meta.env.VITE_API_URL || "https://coindecor-backend-production.up.railway.app";
+    
+    setCargando(true);
+    
     axios.get(`${urlBase}/api/productos/`)
       .then(res => setProductos(res.data))
-      .catch(err => console.error("Error cargando productos:", err));
+      .catch(err => console.error("Error cargando productos:", err))
+      .finally(() => {
+        setCargando(false);
+      });
   }, []);
 
   const navegarA = (v) => {
@@ -80,22 +87,19 @@ function App() {
 
   return (
     <div className="bg-[#f8f9fb] text-gray-900 font-sans">
-      {/* ================= NAVBAR ================= */}
+      {/* ================= NAVBAR (Totalmente Limpio a la izquierda) ================= */}
       <header className="fixed top-0 w-full z-50 backdrop-blur-md bg-white/70 border-b border-gray-100">
         <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-          <img
-            src={logoEmpresa}
-            alt="Coindecor"
-            className="h-10 cursor-pointer"
-            onClick={() => navegarA("inicio")}
-          />
+          
+          {/* CORREGIDO: Ya no hay letras ni logos aquí para mantener la barra limpia */}
+          <div className="w-10 h-10 md:hidden" /> 
 
-          <nav className="hidden md:flex gap-8 font-medium items-center">
+          <nav className="hidden md:flex gap-8 font-medium items-center ml-auto">
             {["inicio","catalogo","contacto"].map(item => (
               <button
                 key={item}
                 onClick={() => navegarA(item)}
-                className={`transition ${vista === item ? "text-[#C6A75E]" : "text-gray-600 hover:text-[#C6A75E]"}`}
+                className={`transition ${vista === item ? "text-[#ff7f50]" : "text-gray-600 hover:text-[#ff7f50]"}`}
               >
                 {item.charAt(0).toUpperCase()+item.slice(1)}
               </button>
@@ -143,8 +147,21 @@ function App() {
         )}
       </header>
 
+      {/* ====== SECCIÓN HERO / BANNER NEGRO SÓLO CON TU IMAGEN DE LOGO ====== */}
+      <div className="bg-black text-white pt-28 pb-10 flex flex-col items-center justify-center border-b border-gray-900">
+        <div className="text-center flex flex-col items-center max-w-xl px-4">
+          {/* CORREGIDO: Se eliminó todo el texto secundario. Queda solo el logo oficial escalado y limpio */}
+          <img 
+            src={logoEmpresa} 
+            alt="Coin Decor" 
+            className="h-24 sm:h-32 object-contain cursor-pointer transition-transform duration-300 hover:scale-102"
+            onClick={() => navegarA("inicio")}
+          />
+        </div>
+      </div>
+
       {/* ====== CONTENIDO PRINCIPAL ====== */}
-      <main className="pt-28 min-h-screen">
+      <main className="min-h-screen">
         {vista === "inicio" && (
           <Inicio onVerCatalogo={() => navegarA("catalogo")} />
         )}
@@ -152,10 +169,10 @@ function App() {
         {vista === "contacto" && <Contacto />}
 
         {vista === "catalogo" && (
-          <div className="max-w-7xl mx-auto px-4 py-12">
+          <div className="max-w-7xl mx-auto px-3 sm:px-4 py-12">
             <div className="text-center mb-14">
-              <h2 className="text-5xl font-black mb-6">Nuestro Catálogo</h2>
-              <div className="max-w-md mx-auto relative">
+              <h2 className="text-4xl sm:text-5xl font-black mb-6">Nuestro Catálogo</h2>
+              <div className="max-w-md mx-auto relative px-2">
                 <input
                   type="text"
                   placeholder="Buscar producto..."
@@ -163,7 +180,7 @@ function App() {
                   onChange={(e)=>setBusqueda(e.target.value)}
                   className="w-full px-6 py-4 rounded-2xl border focus:ring-4 focus:ring-[#C6A75E]/20 outline-none pl-12"
                 />
-                <span className="absolute left-4 top-4 text-xl">🔎</span>
+                <span className="absolute left-6 top-4 text-xl">🔎</span>
               </div>
             </div>
 
@@ -172,16 +189,25 @@ function App() {
               setCategoriaSeleccionada={setCategoriaSeleccionada}
             />
 
-            {productosFiltrados.length === 0 ? (
-              <div className="text-center py-24 bg-white rounded-3xl border border-dashed">
+            {cargando ? (
+              <div className="flex flex-col items-center justify-center py-24">
+                <div className="w-12 h-12 border-4 border-gray-200 border-t-[#C6A75E] rounded-full animate-spin"></div>
+                <p className="text-gray-500 text-sm font-medium mt-4 tracking-wide">
+                  Cargando catálogo de Coindecor...
+                </p>
+              </div>
+            ) : productosFiltrados.length === 0 ? (
+              <div className="text-center py-24 bg-white rounded-3xl border border-dashed mx-2">
                 <p className="text-xl text-gray-500">No encontramos resultados</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-4 gap-3 sm:gap-6 lg:gap-8">
                 {productosFiltrados.map(p => (
-                  <div key={p.id} onClick={() => setProductoSeleccionado(p)} className="cursor-pointer hover:scale-[1.02] transition">
-                    <ProductoCard producto={p}/>
-                  </div>
+                  <ProductoCard 
+                    key={p.id} 
+                    producto={p}
+                    alSeleccionar={() => setProductoSeleccionado(p)}
+                  />
                 ))}
               </div>
             )}

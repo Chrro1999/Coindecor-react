@@ -21,7 +21,7 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-medium mb-4">Navegación</h4>
           <div className="space-y-3 text-sm">
-            <Link to="/" className="block hover:text-[#C6A75E]">Inicio</Link>
+            <Link to="/" className="block hover:text-[#C6A75E]">Inicio</Link> //
             <Link to="/catalogo" className="block hover:text-[#C6A75E]">Catálogo</Link>
             <Link to="/contacto" className="block hover:text-[#C6A75E]">Contacto</Link>
           </div>
