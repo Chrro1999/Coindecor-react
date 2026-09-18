@@ -7,7 +7,7 @@ export default function Carrito({ abierto, setAbierto, items, onEliminar }) {
   const urlBase = import.meta.env.VITE_API_URL || "https://coindecor-backend-production.up.railway.app";
 
   const enviarPedidoWhatsApp = () => {
-    const telefono = "593995604549";
+    const telefono = "593962016555";
     const lista = items.map(p => `- ${p.nombre} (x${p.cantidad}) - $${p.precio}`).join('\n');
     const mensaje = `¡Hola Coindecor! Quisiera realizar el siguiente pedido para pagar con Datafast/DataLink:\n\n${lista}\n\n*Total: $${total.toFixed(2)}*\n\nPor favor, envíenme el link de pago.`;
     

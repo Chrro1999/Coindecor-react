@@ -31,7 +31,7 @@ export default function Footer() {
         <div>
           <h4 className="text-white font-medium mb-4">Contacto</h4>
           <p className="text-sm">Quito, Ecuador</p>
-          <p className="text-sm mt-2">+593 99 560 4549</p>
+          <p className="text-sm mt-2">+593 96 201 6555</p>
           <p className="text-sm mt-2">elcie70@gmail.com</p>
         </div>
       </div>

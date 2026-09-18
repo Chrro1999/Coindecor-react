@@ -1,7 +1,7 @@
 export default function ProductoCard({ producto, alSeleccionar }) {
 
   const manejarReserva = () => {
-    const telefono = "593995604549";
+    const telefono = "593962016555";
     const mensaje = `Hola Coindecor! Me interesa el producto: ${producto.nombre} ($${producto.precio})`;
     const url = `https://wa.me/${telefono}?text=${encodeURIComponent(mensaje)}`;
     window.open(url, '_blank');
