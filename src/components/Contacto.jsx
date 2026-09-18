@@ -2,7 +2,7 @@ import React from 'react';
 
 export default function Contacto() {
 
-  const telefono = "593995604549";
+  const telefono = "593962016555";
   const email = "elcie70@gmail.com";
 
   return (
@@ -77,7 +77,7 @@ export default function Contacto() {
                       font-medium
                     "
                   >
-                    +593 99 560 4549
+                    +593 96 201 6555
                   </a>
                 </div>
               </div>

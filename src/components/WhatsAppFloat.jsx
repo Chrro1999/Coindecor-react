@@ -1,7 +1,7 @@
 import React from "react";
 
 export default function WhatsAppFloat() {
-  const telefono = "593995604549";
+  const telefono = "593962016555";
 
   return (
     <a
